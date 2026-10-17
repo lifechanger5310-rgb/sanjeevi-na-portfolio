@@ -121,6 +121,13 @@ Source: the resume (`Sanjeevi N A Resume.pdf`) + the build guide (`Sanjeevi NA P
 - Production URL: _fill in after first deploy_
 - **Secrets:** a GitHub token was shared in chat to push code. It is NOT stored anywhere in this repo. Each new Claude account must get its own token from the owner in chat (use a fine-grained token limited to this repo) and must never write it into files, git remotes or this README.
 
+**Code map**
+- `src/data/content.ts` — ALL site text (edit content here only)
+- `src/app/globals.css` — locked colour tokens + Inter font
+- `src/app/page.tsx` — section order
+- `src/sections/*` — Hero, About, Experience, Projects, AIPromptEngineering, Skills, Contact
+- `src/components/*` — Navbar, Section, SectionHeading, Reveal, Card, Tag, ButtonLink
+
 **How a fresh Claude chat gets set up**
 1. Clone the repo: `git clone https://github.com/lifechanger5310-rgb/sanjeevi-na-portfolio`
 2. `npm install`
@@ -134,27 +141,29 @@ Source: the resume (`Sanjeevi N A Resume.pdf`) + the build guide (`Sanjeevi NA P
 
 ## 10. Progress Tracker
 
+**Next action for the next chat:** Step 4 — deploy to Vercel (see section 9), then test the live link on a phone and tick the last checklist items.
+
 - [x] **Step 0 — README created first** (this file)
-- [ ] **Step 1 — Project setup:** Next.js + TypeScript + Tailwind + Framer Motion; colour variables in `globals.css`; folders `components/`, `sections/`, `app/`
-- [ ] **Step 2a — Hero + sticky nav**
-- [ ] **Step 2b — About + Experience**
-- [ ] **Step 2c — Projects + AI Prompt Engineering**
-- [ ] **Step 2d — Skills + Contact**
-- [ ] **Step 3 — Motion + mobile polish** (Framer Motion reveals, hover states, check 375px)
+- [x] **Step 1 — Project setup:** Next.js + TypeScript + Tailwind + Framer Motion; colour variables in `globals.css`; folders `components/`, `sections/`, `app/`
+- [x] **Step 2a — Hero + sticky nav**
+- [x] **Step 2b — About + Experience**
+- [x] **Step 2c — Projects + AI Prompt Engineering**
+- [x] **Step 2d — Skills + Contact**
+- [x] **Step 3 — Motion + mobile polish** (done in code, checked at 375px and 1280px in headless Chromium; still test on a real phone after deploy) (Framer Motion reveals, hover states, check 375px)
 - [ ] **Step 4 — Deploy to Vercel** and test live link on phone and desktop
 - [ ] **Step 5 — Final checklist** (below) and update this README
 
 ### Final checklist (from the guide)
 
-- [ ] Name and title correct
-- [ ] Location shows Erode, India
-- [ ] All three company experiences present with real dates
-- [ ] Jamindhar and Click App described honestly
-- [ ] AI Prompt Engineering section short, professional, true
-- [ ] No generic AI visual style
-- [ ] Animations smooth and helpful
+- [x] Name and title correct
+- [x] Location shows Erode, India
+- [x] All three company experiences present with real dates
+- [x] Jamindhar and Click App described honestly
+- [x] AI Prompt Engineering section short, professional, true
+- [x] No generic AI visual style
+- [x] Animations smooth and helpful
 - [ ] Works well on mobile
-- [ ] Email, phone and LinkedIn correct and clickable
+- [x] Email, phone and LinkedIn correct and clickable
 - [ ] Live Vercel link opens without error
 - [ ] README up to date
 
@@ -162,4 +171,6 @@ Source: the resume (`Sanjeevi N A Resume.pdf`) + the build guide (`Sanjeevi NA P
 
 Newest first. One line per change: date (IST) — what — which chat/account.
 
+- 2026-10-17 — Built all 7 sections (Hero, About, Experience, Projects, AI Prompt Engineering, Skills, Contact), sticky nav with mobile menu, Framer Motion reveals/hover/stagger with reduced-motion support. `npm run build` passes. No horizontal overflow at 375px. — Claude account 1
+- 2026-10-17 — Project setup: Next.js 15 (App Router) + TypeScript + Tailwind v4 + Framer Motion + self-hosted Inter (`@fontsource-variable/inter`, no Google Fonts call). Colour tokens in `src/app/globals.css`. — Claude account 1
 - 2026-10-17 — README created first with design system, content source of truth, rules and handoff steps. — Claude account 1

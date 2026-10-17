@@ -1,0 +1,63 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+/* Locked design system — see README section 3. Do not add new colours. */
+:root {
+  --bg: #0b0f19;
+  --surface: #111827;
+  --accent: #3b82f6;
+  --accent-soft: #60a5fa;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --success: #34d399;
+  --border: rgba(148, 163, 184, 0.16);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-success: var(--success);
+  --color-line: var(--border);
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 640px) {
+  body {
+    font-size: 1.0625rem;
+  }
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-soft);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
