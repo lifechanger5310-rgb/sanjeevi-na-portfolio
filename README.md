@@ -103,6 +103,14 @@ Source: the resume (`Sanjeevi N A Resume.pdf`) + the build guide (`Sanjeevi NA P
 - Skill tags: very light stagger
 - Respect `prefers-reduced-motion`
 
+Added in the upgrade (all behind the same reduced-motion rule):
+- One motion setup: `MotionProvider` (LazyMotion + spring defaults). Use `m`, never `motion`, or the build fails (strict mode).
+- Reveals: `Reveal` / `RevealGroup` / `RevealItem`, once per page load, staggered. Every element that starts hidden carries `data-reveal`, so a `<noscript>` rule in `layout.tsx` shows it when JavaScript is off.
+- Buttons: magnetic pull (real mouse only, max 10px), spring hover and press.
+- Cards: soft 3D tilt (max 6°) and a glow that follows a real mouse. Touch gets a glow where you press. No tilt under reduced motion.
+- Nav: active-section underline and an animated mobile menu.
+- Backdrop: faint grid, vignette and grain, plus section dividers. The grid drifts slowly, only on mouse devices with motion allowed. To stop it, delete the `animation` rule inside the `@media (hover: hover)` block in `globals.css`.
+
 ## 8. Decisions Log
 
 | ID | Decision | Why |
@@ -112,13 +120,17 @@ Source: the resume (`Sanjeevi N A Resume.pdf`) + the build guide (`Sanjeevi NA P
 | D3 | The resume lists AI tools Cursor, Perplexity, Claude; the guide adds Grok, Gemini, ChatGPT, Z Ai | Owner confirmed the extra tools. |
 | D4 | Optional intro video skipped in v1 | Guide says skip if time is tight. A CSS/Framer abstract hero accent is allowed later. |
 | D5 | Resume file is not added to the repo | Contains personal data. Add only if the owner asks. |
+| D6 | Download Resume buttons are built (Hero and Contact) but OFF: `resumeUrl` in `content.ts` is empty and the PDF is not in the repo | The build guide never asks for a resume download, so D5 stands. The PDF holds phone, email and school marks, and a public repo keeps it in git history even if the file is deleted later. To turn on: add the PDF to `public/` and set `resumeUrl` (and `resumeFileName`) in `content.ts`. The Hero then shows 3 buttons instead of the 2 in section 4. |
+| D7 | Primary button label uses the navy `--bg`, not white | White on `#3B82F6` is 3.7:1 contrast, navy is 5.2:1. No new colour added. |
+| D8 | Backdrop grid drifts slowly (70s per tile, mouse devices only, off for reduced motion) | Ambient depth, not UI motion. The guide's "must avoid" list (parallax, endless loaders, UI animation over 0.8s) does not cover it. Owner can veto; reversible, see section 7. |
+| D9 | Next.js stays on 15.5.28 | `npm audit` flags PostCSS advisories bundled in `next`. They concern build-time processing of untrusted CSS, and this site only builds its own CSS. The only fix is the Next 16 major upgrade, so it is left for the owner to decide. |
 
 ## 9. Accounts, Deploy and Environment
 
 - GitHub account: `lifechanger5310-rgb`
 - Repo: https://github.com/lifechanger5310-rgb/sanjeevi-na-portfolio (public)
 - Deploy: Vercel, linked to the same GitHub account. The Vercel GitHub app must have access to this repo.
-- Production URL: _fill in after first deploy_
+- Production URL: https://sanjeevi-na-portfolio.vercel.app (live; the Vercel project redeploys on every push to `main`)
 - **Secrets:** a GitHub token was shared in chat to push code. It is NOT stored anywhere in this repo. Each new Claude account must get its own token from the owner in chat (use a fine-grained token limited to this repo) and must never write it into files, git remotes or this README.
 
 **Code map**
@@ -126,7 +138,7 @@ Source: the resume (`Sanjeevi N A Resume.pdf`) + the build guide (`Sanjeevi NA P
 - `src/app/globals.css` — locked colour tokens + Inter font
 - `src/app/page.tsx` — section order
 - `src/sections/*` — Hero, About, Experience, Projects, AIPromptEngineering, Skills, Contact
-- `src/components/*` — Navbar, Section, SectionHeading, Reveal, Card, Tag, ButtonLink
+- `src/components/*` — Navbar, Section, SectionHeading, Reveal (+ RevealGroup, RevealItem), Card, Tag, ButtonLink, Magnetic, MotionProvider, Backdrop, BulletList, icons
 
 **How a fresh Claude chat gets set up**
 1. Clone the repo: `git clone https://github.com/lifechanger5310-rgb/sanjeevi-na-portfolio`
@@ -141,8 +153,8 @@ Source: the resume (`Sanjeevi N A Resume.pdf`) + the build guide (`Sanjeevi NA P
 
 ## 10. Progress Tracker
 
-**Next action for the next chat:** Step 4 — deploy to Vercel, then test the live link on a phone and tick the last checklist items.
-Code is already pushed to `main`. The Claude Vercel connector got `403 forbidden` when creating the project, so the owner must import it once in the Vercel dashboard: vercel.com → team `livechanger` → Add New → Project → Import `lifechanger5310-rgb/sanjeevi-na-portfolio` → Framework Next.js (auto) → Deploy. After that, every push to `main` redeploys. Then fill the Production URL in section 9.
+**Next action for the next chat:** the owner tests the live link on a real phone and on desktop (last part of Step 4), ticks Step 4 and "Works well on mobile", and says whether the resume download should go live (D6). Nothing else is open.
+The site is live at https://sanjeevi-na-portfolio.vercel.app and the Vercel project is linked to this repo (commit status `Vercel: success`). Every push to `main` redeploys.
 
 - [x] **Step 0 — README created first** (this file)
 - [x] **Step 1 — Project setup:** Next.js + TypeScript + Tailwind + Framer Motion; colour variables in `globals.css`; folders `components/`, `sections/`, `app/`
@@ -151,7 +163,8 @@ Code is already pushed to `main`. The Claude Vercel connector got `403 forbidden
 - [x] **Step 2c — Projects + AI Prompt Engineering**
 - [x] **Step 2d — Skills + Contact**
 - [x] **Step 3 — Motion + mobile polish** (done in code, checked at 375px and 1280px in headless Chromium; still test on a real phone after deploy) (Framer Motion reveals, hover states, check 375px)
-- [ ] **Step 4 — Deploy to Vercel** and test live link on phone and desktop
+- [x] **Step 3b — Upgrade: richer motion and real resume detail** (see sections 7, 8, 12 and the Change Log)
+- [ ] **Step 4 — Deploy to Vercel** and test live link on phone and desktop (deploy is done and live; only the real-phone test is open)
 - [ ] **Step 5 — Final checklist** (below) and update this README
 
 ### Final checklist (from the guide)
@@ -163,16 +176,42 @@ Code is already pushed to `main`. The Claude Vercel connector got `403 forbidden
 - [x] AI Prompt Engineering section short, professional, true
 - [x] No generic AI visual style
 - [x] Animations smooth and helpful
-- [ ] Works well on mobile
+- [ ] Works well on mobile (checked in headless Chromium at 375px with touch; real-phone test still open)
 - [x] Email, phone and LinkedIn correct and clickable
-- [ ] Live Vercel link opens without error
-- [ ] README up to date
+- [x] Live Vercel link opens without error
+- [x] README up to date
 
 ## 11. Change Log
 
 Newest first. One line per change: date (IST) — what — which chat/account.
 
+- 2026-10-17 — README: Production URL filled in, tracker and checklist updated, decisions D6–D9, content source log (section 12). — Claude (upgrade session)
+- 2026-10-17 — Upgrade pushed: motion system (LazyMotion, spring defaults, reveal groups, magnetic buttons, card tilt and glow, active-nav underline, animated mobile menu, section dividers, grid and grain backdrop), richer real content from the resume (role bullets, project highlights, "Across these roles"), no-JavaScript fallback. Download Resume buttons are wired but hidden (D6). Hero size stays at the locked `clamp(2.5rem, 6vw, 4rem)` and the About heading stays "A short intro". `npm run lint` and `npm run build` pass. Headless Chromium checks pass at 1280px and 375px (touch), with reduced motion and with JavaScript off; no console warnings in production or dev mode. — Claude (upgrade session)
 - 2026-10-17 — Pushed `main` to GitHub (empty repo was created by the owner). Vercel connector could not create the project (403); dashboard import needed. — Claude account 1
 - 2026-10-17 — Built all 7 sections (Hero, About, Experience, Projects, AI Prompt Engineering, Skills, Contact), sticky nav with mobile menu, Framer Motion reveals/hover/stagger with reduced-motion support. `npm run build` passes. No horizontal overflow at 375px. — Claude account 1
 - 2026-10-17 — Project setup: Next.js 15 (App Router) + TypeScript + Tailwind v4 + Framer Motion + self-hosted Inter (`@fontsource-variable/inter`, no Google Fonts call). Colour tokens in `src/app/globals.css`. — Claude account 1
 - 2026-10-17 — README created first with design system, content source of truth, rules and handoff steps. — Claude account 1
+
+## 12. Content Source Log
+
+Every line on the site traces to the resume (R), the build guide (G) or the AI experience the owner confirmed (O). Wording may be tightened; facts may not change.
+
+| Site element | Source |
+|---|---|
+| Name, title, email, phone, LinkedIn | R header |
+| Location "Erode, India" | G (see D1). R says Gobichettipalayam |
+| Hero one-liner, About lines, Contact line | G and section 5 (unchanged from v1) |
+| Section headings | Kept from v1. The guide does not set them |
+| Company names, places, role titles, dates | R Experience |
+| Junior Team Member bullet | R: new features for UI/UX and API integration in the product-based app, Jamindhar. "Property management" comes from R Projects ("Manage Properties app") |
+| Junior Application Developer Intern bullet | R: enhanced and handled the Android and web product-based app, Jamindhar |
+| Blackstone Infomatics bullet | R: iOS integration for the real-time project application, Click. "Car booking" comes from R Projects |
+| Codingmart bullets | R: time management, efficiency, and applying JavaScript to data structures and algorithms (split into two lines) |
+| "Across these roles" (3 bullets) | R Roles and Responsibilities (it covers Click App and Jamindhar, not one company) |
+| Jamindhar description, bullets, stack | R Projects, JAMINDHAR |
+| Jamindhar period Jul 2025 – Feb 2026 | Derived: the span of the two U2 roles, both on Jamindhar. Not a stated project date |
+| Click App description, bullet, stack | R Projects, Click App. The resume bullet is cut off mid-sentence ("featuring user-friendly"), so only "iOS integration" and "user-friendly design" are used. Do not complete the sentence |
+| Click App period Nov 2024 – Apr 2025 | Derived: the Blackstone Infomatics role dates |
+| AI Prompt Engineering section | G (Ready-to-Use Text) and O (section 5) |
+| Skills | R Technical Skills. AI tools extended by O (D3) |
+| Resume PDF | Not published. See D5 and D6 |
