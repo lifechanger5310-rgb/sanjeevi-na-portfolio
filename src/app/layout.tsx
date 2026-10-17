@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import Backdrop from "@/components/Backdrop";
+import MotionProvider from "@/components/MotionProvider";
 
 export const metadata: Metadata = {
   title: "Sanjeevi N A — Frontend Web & Mobile Application Developer",
@@ -16,7 +18,14 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {/* Reveals start hidden; without JavaScript they must still be readable. */}
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+        <Backdrop />
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   );
 }

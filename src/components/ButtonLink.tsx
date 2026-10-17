@@ -1,35 +1,41 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { m } from "framer-motion";
 import type { ReactNode } from "react";
+import Magnetic from "./Magnetic";
 
 type Props = {
   href: string;
   children: ReactNode;
   variant?: "primary" | "ghost";
   external?: boolean;
+  /** File name for a download link (same-origin files only). */
+  download?: string;
   ariaLabel?: string;
 };
 
-export default function ButtonLink({ href, children, variant = "primary", external, ariaLabel }: Props) {
-  const reduce = useReducedMotion();
+/** Button-styled link: magnetic pull (mouse), spring hover and press, and a clear pressed state on touch. */
+export default function ButtonLink({ href, children, variant = "primary", external, download, ariaLabel }: Props) {
   const base =
-    "inline-flex min-h-[44px] items-center justify-center rounded-xl px-6 text-base font-semibold transition-colors duration-200";
+    "flex min-h-[44px] items-center justify-center gap-2 rounded-xl px-6 text-base font-semibold transition-colors duration-200";
+  // Dark navy text on the blue accent gives 5.2:1 contrast; white on #3B82F6 is only 3.7:1.
   const styles =
     variant === "primary"
-      ? "bg-accent text-white hover:bg-accent-soft hover:text-bg"
-      : "border border-line text-text hover:border-accent-soft hover:text-accent-soft";
+      ? "bg-accent text-bg hover:bg-accent-soft active:bg-accent-soft"
+      : "border border-line text-text hover:border-accent-soft hover:text-accent-soft active:border-accent-soft active:text-accent-soft";
   return (
-    <motion.a
-      href={href}
-      aria-label={ariaLabel}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      whileHover={reduce ? undefined : { scale: 1.03 }}
-      whileTap={reduce ? undefined : { scale: 0.98 }}
-      transition={{ duration: 0.15 }}
-      className={`${base} ${styles}`}
-    >
-      {children}
-    </motion.a>
+    <Magnetic>
+      <m.a
+        href={href}
+        aria-label={ariaLabel}
+        download={download}
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.95 }}
+        className={`${base} ${styles}`}
+      >
+        {children}
+      </m.a>
+    </Magnetic>
   );
 }

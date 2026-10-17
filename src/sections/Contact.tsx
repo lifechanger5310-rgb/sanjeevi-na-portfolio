@@ -2,6 +2,7 @@ import Section from "@/components/Section";
 import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
 import ButtonLink from "@/components/ButtonLink";
+import { DownloadIcon } from "@/components/icons";
 import { profile } from "@/data/content";
 
 export default function Contact() {
@@ -14,7 +15,7 @@ export default function Contact() {
           <div>
             <dt className="text-sm text-muted">Email</dt>
             <dd>
-              <a className="font-medium text-text underline-offset-4 hover:text-accent-soft hover:underline" href={`mailto:${profile.email}`}>
+              <a className="font-medium text-text underline-offset-4 hover:text-accent-soft hover:underline active:text-accent-soft" href={`mailto:${profile.email}`}>
                 {profile.email}
               </a>
             </dd>
@@ -22,7 +23,7 @@ export default function Contact() {
           <div>
             <dt className="text-sm text-muted">Phone</dt>
             <dd>
-              <a className="font-medium text-text underline-offset-4 hover:text-accent-soft hover:underline" href={profile.phoneHref}>
+              <a className="font-medium text-text underline-offset-4 hover:text-accent-soft hover:underline active:text-accent-soft" href={profile.phoneHref}>
                 {profile.phone}
               </a>
             </dd>
@@ -31,7 +32,7 @@ export default function Contact() {
             <dt className="text-sm text-muted">LinkedIn</dt>
             <dd>
               <a
-                className="font-medium text-text underline-offset-4 hover:text-accent-soft hover:underline"
+                className="font-medium text-text underline-offset-4 hover:text-accent-soft hover:underline active:text-accent-soft"
                 href={profile.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -45,11 +46,22 @@ export default function Contact() {
             <dd className="font-medium text-text">{profile.location}</dd>
           </div>
         </dl>
-        <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <ButtonLink href={`mailto:${profile.email}`}>Email me</ButtonLink>
           <ButtonLink href={profile.linkedin} variant="ghost" external>
             LinkedIn
           </ButtonLink>
+          {profile.resumeUrl && (
+            <ButtonLink
+              href={profile.resumeUrl}
+              variant="ghost"
+              download={profile.resumeFileName}
+              ariaLabel="Download resume (PDF)"
+            >
+              <DownloadIcon />
+              Download Resume
+            </ButtonLink>
+          )}
         </div>
       </Reveal>
     </Section>
