@@ -150,6 +150,8 @@ Added in the upgrade (all behind the same reduced-motion rule):
 **Known environment limits seen in Claude Code cloud sessions**
 - Creating a new GitHub repo from the session can be blocked. The owner creates the empty repo; the session then attaches it.
 - GitHub GraphQL is blocked; use REST or plain git.
+- The shell cannot resolve `*.vercel.app` (curl fails). Check the live page with WebFetch. In one session the plain URL kept answering `302` to an `http://` URL; adding a throwaway query (`/?cb=<short-sha>`) fetched the page normally. The Vercel build state is also readable with `gh api repos/lifechanger5310-rgb/sanjeevi-na-portfolio/commits/<sha>/status` (context `Vercel`).
+- Headless tests: the site sets `scroll-behavior: smooth`. Use `window.scrollTo({ top, behavior: 'instant' })` and wait about 250 ms per step. With a plain `scrollTo` the bottom of the page (last Skills tags, Contact) looks blank in screenshots. That is a test artifact, not a site bug.
 
 ## 10. Progress Tracker
 
@@ -185,6 +187,7 @@ The site is live at https://sanjeevi-na-portfolio.vercel.app and the Vercel proj
 
 Newest first. One line per change: date (IST) — what — which chat/account.
 
+- 2026-10-17 — Re-check from a clean clone: live page serves the latest `main` (commit status `Vercel: success`; "Across these roles", mailto, tel and LinkedIn links present; no resume button, as per D6). `npm ci`, `npm run lint` and `npm run build` pass. Headless Chromium at 375px and 1280px: no horizontal overflow, no console warnings, hero 40px and 64px, Inter only, tapping Contact reveals the section. Resume links match the PDF. Corrected the Click App stack provenance (section 12) and added two test notes (section 9). No site code changed. Real-phone test and D6 are still with the owner. — Claude (verification session)
 - 2026-10-17 — README: Production URL filled in, tracker and checklist updated, decisions D6–D9, content source log (section 12). — Claude (upgrade session)
 - 2026-10-17 — Upgrade pushed: motion system (LazyMotion, spring defaults, reveal groups, magnetic buttons, card tilt and glow, active-nav underline, animated mobile menu, section dividers, grid and grain backdrop), richer real content from the resume (role bullets, project highlights, "Across these roles"), no-JavaScript fallback. Download Resume buttons are wired but hidden (D6). Hero size stays at the locked `clamp(2.5rem, 6vw, 4rem)` and the About heading stays "A short intro". `npm run lint` and `npm run build` pass. Headless Chromium checks pass at 1280px and 375px (touch), with reduced motion and with JavaScript off; no console warnings in production or dev mode. — Claude (upgrade session)
 - 2026-10-17 — Pushed `main` to GitHub (empty repo was created by the owner). Vercel connector could not create the project (403); dashboard import needed. — Claude account 1
@@ -210,7 +213,8 @@ Every line on the site traces to the resume (R), the build guide (G) or the AI e
 | "Across these roles" (3 bullets) | R Roles and Responsibilities (it covers Click App and Jamindhar, not one company) |
 | Jamindhar description, bullets, stack | R Projects, JAMINDHAR |
 | Jamindhar period Jul 2025 – Feb 2026 | Derived: the span of the two U2 roles, both on Jamindhar. Not a stated project date |
-| Click App description, bullet, stack | R Projects, Click App. The resume bullet is cut off mid-sentence ("featuring user-friendly"), so only "iOS integration" and "user-friendly design" are used. Do not complete the sentence |
+| Click App description, bullet | R Projects, Click App. The resume bullet is cut off mid-sentence ("featuring user-friendly"), so only "iOS integration" and "user-friendly design" are used. Do not complete the sentence |
+| Click App stack tags (Flutter, iOS) | Derived: "iOS" from the R Projects bullet, "Flutter" from the Blackstone Infomatics role title "Flutter iOS App Developer". The resume lists no stack under Click App. The owner can drop "Flutter" if he wants only what the project bullet states |
 | Click App period Nov 2024 – Apr 2025 | Derived: the Blackstone Infomatics role dates |
 | AI Prompt Engineering section | G (Ready-to-Use Text) and O (section 5) |
 | Skills | R Technical Skills. AI tools extended by O (D3) |
