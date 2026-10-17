@@ -141,7 +141,8 @@ Source: the resume (`Sanjeevi N A Resume.pdf`) + the build guide (`Sanjeevi NA P
 
 ## 10. Progress Tracker
 
-**Next action for the next chat:** Step 4 — deploy to Vercel (see section 9), then test the live link on a phone and tick the last checklist items.
+**Next action for the next chat:** Step 4 — deploy to Vercel, then test the live link on a phone and tick the last checklist items.
+Code is already pushed to `main`. The Claude Vercel connector got `403 forbidden` when creating the project, so the owner must import it once in the Vercel dashboard: vercel.com → team `livechanger` → Add New → Project → Import `lifechanger5310-rgb/sanjeevi-na-portfolio` → Framework Next.js (auto) → Deploy. After that, every push to `main` redeploys. Then fill the Production URL in section 9.
 
 - [x] **Step 0 — README created first** (this file)
 - [x] **Step 1 — Project setup:** Next.js + TypeScript + Tailwind + Framer Motion; colour variables in `globals.css`; folders `components/`, `sections/`, `app/`
@@ -171,6 +172,7 @@ Source: the resume (`Sanjeevi N A Resume.pdf`) + the build guide (`Sanjeevi NA P
 
 Newest first. One line per change: date (IST) — what — which chat/account.
 
+- 2026-10-17 — Pushed `main` to GitHub (empty repo was created by the owner). Vercel connector could not create the project (403); dashboard import needed. — Claude account 1
 - 2026-10-17 — Built all 7 sections (Hero, About, Experience, Projects, AI Prompt Engineering, Skills, Contact), sticky nav with mobile menu, Framer Motion reveals/hover/stagger with reduced-motion support. `npm run build` passes. No horizontal overflow at 375px. — Claude account 1
 - 2026-10-17 — Project setup: Next.js 15 (App Router) + TypeScript + Tailwind v4 + Framer Motion + self-hosted Inter (`@fontsource-variable/inter`, no Google Fonts call). Colour tokens in `src/app/globals.css`. — Claude account 1
 - 2026-10-17 — README created first with design system, content source of truth, rules and handoff steps. — Claude account 1
