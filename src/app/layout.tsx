@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import Backdrop from "@/components/Backdrop";
 import MotionProvider from "@/components/MotionProvider";
 
 export const metadata: Metadata = {
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0B0F19",
+  themeColor: "#FAFAFA",
   width: "device-width",
   initialScale: 1,
 };
@@ -23,7 +22,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <noscript>
           <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
         </noscript>
-        <Backdrop />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>

@@ -8,28 +8,31 @@ export const profile = {
     "Building clean mobile and web apps with Flutter, iOS, and modern web tools. Using AI prompting to learn fast and deliver reliable code.",
   location: "Erode, India",
   email: "sanjeevikavin@gmail.com",
-  phone: "+91 63796 04196",
+  phone: "+91 6379604196",
   phoneHref: "tel:+916379604196",
   linkedin: "https://linkedin.com/in/sanjeevi-n-a-0758ba235",
-  // Download Resume buttons are built but OFF while resumeUrl is empty (README D5/D6).
-  // To turn on: put the PDF in /public, then set resumeUrl to "/Sanjeevi_N_A_Resume.pdf".
-  resumeUrl: "",
+  linkedinLabel: "linkedin.com/in/sanjeevi-n-a-0758ba235",
+  // File lives in /public. To replace it with the original resume, overwrite the PDF with the same name.
+  resumeUrl: "/Sanjeevi_N_A_Resume.pdf",
   resumeFileName: "Sanjeevi_N_A_Resume.pdf",
 };
 
-export const about = [
-  "I am a Frontend Web and Mobile Application Developer based in Erode, India.",
-  "I have worked on real product apps using Flutter, native iOS (Swift + UIKit), and web technologies (Next.js, React).",
-  "When the company needed web development, I used AI tools to understand new concepts quickly and write clean code.",
-  "I enjoy solving UI/UX problems and building features that users find easy to use.",
-];
+export const about = {
+  heading: "Frontend developer across mobile and web",
+  lead: "I am a Frontend Web and Mobile Application Developer based in Erode, India.",
+  body: [
+    "I have worked on real product apps using Flutter, iOS (Swift and UIKit), and web technologies such as Next.js and React.",
+    "When a project needed web development, I used AI tools to understand new concepts quickly and write clean, readable code.",
+    "I enjoy solving UI/UX problems and building features that are easy to use.",
+  ],
+};
 
 export type Role = { title: string; period: string; points: string[] };
 export type Experience = { company: string; place: string; roles: Role[] };
 
 export const experience: Experience[] = [
   {
-    company: "U2 Breakthrough Technologies Pvt Ltd",
+    company: "U2 Breakthrough Technologies",
     place: "Coimbatore",
     roles: [
       {
@@ -53,12 +56,12 @@ export const experience: Experience[] = [
       {
         title: "Flutter iOS App Developer",
         period: "Nov 2024 – Apr 2025",
-        points: ["Worked on iOS integration for Click, a real-time car booking application."],
+        points: ["Worked on iOS integration for Click App, a real-time car booking application."],
       },
     ],
   },
   {
-    company: "Codingmart Technologies Pvt Ltd",
+    company: "Codingmart Technologies",
     place: "Coimbatore",
     roles: [
       {
@@ -83,50 +86,49 @@ export const acrossRoles = [
 export const projects = [
   {
     name: "Jamindhar",
-    kind: "Property management app",
-    company: "U2 Breakthrough Technologies Pvt Ltd",
-    period: "Jul 2025 – Feb 2026",
-    description: "A Manage Properties app that helps property managers track occupancy, rent collection and maintenance.",
-    points: [
-      "Employee and owner logins in the web app, plus a separate admin login web app.",
-      "UI/UX and API integrations for the Android and web versions.",
-    ],
+    meta: "U2 Breakthrough Technologies · Jul 2025 – Feb 2026",
+    description:
+      "A property management app that helps managers track occupancy, rent collection and maintenance. The web app has employee and owner logins, plus a separate admin login web app.",
     stack: ["Flutter", "Dart", "Next.js", "React", "React Bootstrap", "TypeScript", "JavaScript"],
   },
   {
     name: "Click App",
-    kind: "Car booking app",
-    company: "Blackstone Infomatics",
-    period: "Nov 2024 – Apr 2025",
-    description: "A real-time car booking application.",
-    points: ["I handled the iOS integration with a user-friendly design."],
+    meta: "Blackstone Infomatics · Nov 2024 – Apr 2025",
+    description: "A real-time car booking application. I handled the iOS integration with a user-friendly design.",
     stack: ["Flutter", "iOS"],
   },
 ];
 
 export const aiSection = {
+  heading: "Working with AI tools every day",
   intro:
-    "For the past year I have worked daily with multiple AI platforms: Claude, Perplexity, Grok, Gemini, ChatGPT and others.",
+    "For the past year I have worked daily with multiple AI platforms, choosing the right one for each job instead of relying on a single tool.",
   points: [
-    "Learned which tool works best for each task: code generation, debugging, concept explanation and research.",
-    "Delivers features faster and with fewer bugs.",
-    "Understands every line of code that ships.",
+    "Code generation and debugging.",
+    "Explaining unfamiliar concepts quickly.",
+    "Research and comparing approaches.",
+    "Reading and understanding the code before it ships.",
   ],
-  tools: ["Claude", "Perplexity", "Grok", "Gemini", "ChatGPT", "Z Ai", "Cursor"],
+  tools: ["Claude", "Perplexity", "Grok", "Gemini", "ChatGPT", "Cursor"],
 };
 
 export const skills: { group: string; items: string[] }[] = [
   { group: "Languages", items: ["HTML", "CSS", "JavaScript", "TypeScript", "Dart", "Swift", "Java"] },
-  { group: "Frameworks & Libraries", items: ["Next.js", "React", "React Bootstrap", "Tailwind CSS", "Flutter", "UIKit"] },
-  { group: "Backend & Data", items: ["Firebase (BaaS)", "SQL"] },
-  { group: "Patterns", items: ["MVC", "MVVM"] },
+  {
+    group: "Frameworks",
+    items: ["Next.js", "React", "React Bootstrap", "Tailwind CSS", "Flutter", "UIKit", "MVC", "MVVM"],
+  },
+  { group: "Backend", items: ["Firebase (BaaS)", "SQL"] },
   { group: "Tools", items: ["VS Code", "Xcode", "Android Studio", "SoapUI", "GitHub"] },
   { group: "AI Tools", items: ["Claude", "Perplexity", "Grok", "Gemini", "ChatGPT", "Z Ai", "Cursor"] },
 ];
 
+/** Section ids in page order. The nav and the active-link logic both read this. */
 export const nav = [
-  { label: "Home", href: "#home" },
-  { label: "Work", href: "#work" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", id: "about" },
+  { label: "Experience", id: "experience" },
+  { label: "Projects", id: "projects" },
+  { label: "AI", id: "ai" },
+  { label: "Skills", id: "skills" },
+  { label: "Contact", id: "contact" },
 ];

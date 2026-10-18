@@ -2,7 +2,6 @@
 
 import { m } from "framer-motion";
 import type { ReactNode } from "react";
-import Magnetic from "./Magnetic";
 
 type Props = {
   href: string;
@@ -14,28 +13,25 @@ type Props = {
   ariaLabel?: string;
 };
 
-/** Button-styled link: magnetic pull (mouse), spring hover and press, and a clear pressed state on touch. */
+/** Pill button link. Hover: gentle scale and a teal highlight. Press: slight shrink. */
 export default function ButtonLink({ href, children, variant = "primary", external, download, ariaLabel }: Props) {
   const base =
-    "flex min-h-[44px] items-center justify-center gap-2 rounded-xl px-6 text-base font-semibold transition-colors duration-200";
-  // Dark navy text on the blue accent gives 5.2:1 contrast; white on #3B82F6 is only 3.7:1.
+    "inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-6 text-[0.95rem] font-medium transition-[background-color,border-color,box-shadow] duration-200";
   const styles =
     variant === "primary"
-      ? "bg-accent text-bg hover:bg-accent-soft active:bg-accent-soft"
-      : "border border-line text-text hover:border-accent-soft hover:text-accent-soft active:border-accent-soft active:text-accent-soft";
+      ? "bg-accent text-white hover:shadow-[0_8px_20px_-8px_rgb(13_148_136/0.7)]"
+      : "border border-line bg-surface text-text hover:border-accent hover:bg-accent/5";
   return (
-    <Magnetic>
-      <m.a
-        href={href}
-        aria-label={ariaLabel}
-        download={download}
-        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-        whileHover={{ scale: 1.04 }}
-        whileTap={{ scale: 0.95 }}
-        className={`${base} ${styles}`}
-      >
-        {children}
-      </m.a>
-    </Magnetic>
+    <m.a
+      href={href}
+      aria-label={ariaLabel}
+      download={download}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
+      className={`${base} ${styles}`}
+    >
+      {children}
+    </m.a>
   );
 }

@@ -1,40 +1,40 @@
 import Section from "@/components/Section";
-import SectionHeading from "@/components/SectionHeading";
-import Card from "@/components/Card";
-import BulletList from "@/components/BulletList";
 import Reveal, { RevealGroup, RevealItem } from "@/components/Reveal";
+import BulletList from "@/components/BulletList";
 import { acrossRoles, experience } from "@/data/content";
 
 export default function Experience() {
   return (
-    <Section id="experience" alt>
-      <SectionHeading id="experience-title" kicker="Experience" title="Where I have worked" />
-      <RevealGroup className="grid gap-5" stagger={0.12}>
+    <Section id="experience" label="Experience" title="Where I have worked">
+      <RevealGroup as="ul" stagger={0.12} className="ml-1.5 border-l border-line">
         {experience.map((job) => (
-          <RevealItem key={job.company}>
-            <Card>
-              <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-                <h3 className="text-lg font-semibold text-text">{job.company}</h3>
-                <p className="text-sm text-muted">{job.place}</p>
-              </div>
-              <ul className="mt-4 space-y-5">
-                {job.roles.map((r) => (
-                  <li key={r.title}>
-                    <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between">
-                      <span className="font-medium text-accent-soft">{r.title}</span>
-                      <span className="text-sm text-muted">{r.period}</span>
-                    </div>
-                    <BulletList items={r.points} className="mt-2" />
-                  </li>
-                ))}
-              </ul>
-            </Card>
+          <RevealItem as="li" key={job.company} className="group relative pb-12 pl-8 last:pb-0 sm:pl-10">
+            <span
+              aria-hidden="true"
+              className="absolute -left-[7px] top-2 h-3.5 w-3.5 rounded-full border-2 border-accent bg-bg transition-colors duration-200 group-hover:bg-accent"
+            />
+            <h3 className="text-lg font-semibold text-text">{job.company}</h3>
+            <p className="text-sm text-muted">{job.place}</p>
+            <div className="mt-5 space-y-6">
+              {job.roles.map((role) => (
+                <div key={role.title}>
+                  <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                    <h4 className="font-medium text-text">{role.title}</h4>
+                    <p className="text-sm text-muted">{role.period}</p>
+                  </div>
+                  <BulletList items={role.points} className="mt-2" />
+                </div>
+              ))}
+            </div>
           </RevealItem>
         ))}
       </RevealGroup>
-      <Reveal delay={0.1} className="mt-10">
-        <h3 className="text-base font-semibold text-text">Across these roles</h3>
-        <BulletList items={acrossRoles} className="mt-3 max-w-2xl" />
+
+      <Reveal className="mt-14 sm:mt-16">
+        <div className="rounded-2xl border border-line bg-surface p-6 sm:p-8">
+          <h3 className="text-base font-semibold text-text">Across these roles</h3>
+          <BulletList items={acrossRoles} className="mt-3" />
+        </div>
       </Reveal>
     </Section>
   );

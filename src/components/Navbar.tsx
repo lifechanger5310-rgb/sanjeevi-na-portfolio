@@ -4,34 +4,25 @@ import { AnimatePresence, m } from "framer-motion";
 import { useEffect, useState } from "react";
 import { nav, profile } from "@/data/content";
 
-/** Page order, and the nav link each section belongs to (Experience sits under About; AI and Skills under Work). */
-const SECTIONS = ["home", "about", "experience", "work", "ai", "skills", "contact"] as const;
-type SectionId = (typeof SECTIONS)[number];
-const OWNER: Record<SectionId, string> = {
-  home: "#home",
-  about: "#about",
-  experience: "#about",
-  work: "#work",
-  ai: "#work",
-  skills: "#work",
-  contact: "#contact",
-};
+const SECTIONS = ["home", ...nav.map((n) => n.id)];
 
-/** Which nav link matches the section under the 35% line of the viewport. Reads layout once per frame while scrolling. */
-function useActiveLink() {
-  const [active, setActive] = useState("#home");
+/** Which section sits under the 35% line of the viewport. Reads layout once per frame while scrolling. */
+function useActiveSection() {
+  const [active, setActive] = useState("home");
   useEffect(() => {
     let frame = 0;
     const measure = () => {
       frame = 0;
       const line = window.innerHeight * 0.35;
-      let current: SectionId = SECTIONS[0];
+      let current = SECTIONS[0];
       for (const id of SECTIONS) {
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top <= line) current = id;
       }
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) current = "contact";
-      setActive(OWNER[current]);
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+        current = SECTIONS[SECTIONS.length - 1];
+      }
+      setActive(current);
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(measure);
@@ -50,7 +41,7 @@ function useActiveLink() {
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const active = useActiveLink();
+  const active = useActiveSection();
 
   useEffect(() => {
     if (!open) return;
@@ -62,93 +53,85 @@ export default function Navbar() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-bg/90 backdrop-blur">
-      <nav aria-label="Main" className="mx-auto flex h-16 max-w-5xl items-center justify-between px-5 sm:px-8">
-        <m.a href="#home" whileTap={{ scale: 0.96 }} className="text-base font-bold tracking-tight text-text">
+    <header className="pointer-events-none sticky top-0 z-50 px-4 pt-4">
+      <nav
+        aria-label="Main"
+        className="pointer-events-auto relative mx-auto flex max-w-3xl items-center justify-between rounded-full border border-line bg-surface/85 py-1.5 pl-5 pr-1.5 shadow-[0_1px_2px_rgb(17_24_39/0.04)] backdrop-blur md:pr-2"
+      >
+        <a href="#home" className="text-[0.95rem] font-semibold tracking-tight text-text">
           {profile.name}
-        </m.a>
+        </a>
 
-        <ul className="hidden items-center gap-1 sm:flex">
+        <ul className="hidden items-center gap-0.5 md:flex">
           {nav.map((n) => {
-            const isActive = active === n.href;
+            const isActive = active === n.id;
             return (
-              <li key={n.href}>
-                <m.a
-                  href={n.href}
+              <li key={n.id}>
+                <a
+                  href={`#${n.id}`}
                   aria-current={isActive ? "location" : undefined}
-                  whileTap={{ scale: 0.95 }}
-                  className={`group relative inline-flex min-h-[44px] items-center rounded-lg px-4 text-[0.95rem] transition-colors duration-200 ${
-                    isActive ? "text-text" : "text-muted hover:text-text"
+                  className={`inline-flex min-h-[40px] items-center rounded-full px-3.5 text-sm transition-colors duration-300 ${
+                    isActive
+                      ? "bg-accent/10 font-medium text-text"
+                      : "text-muted hover:bg-accent/5 hover:text-text"
                   }`}
                 >
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 rounded-lg bg-accent/10 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                  />
-                  <span className="relative">{n.label}</span>
-                  <m.span
-                    aria-hidden="true"
-                    initial={false}
-                    animate={{ scaleX: isActive ? 1 : 0, opacity: isActive ? 1 : 0 }}
-                    style={{ originX: 0 }}
-                    className="absolute inset-x-4 bottom-2 h-0.5 rounded-full bg-accent"
-                  />
-                </m.a>
+                  {n.label}
+                </a>
               </li>
             );
           })}
         </ul>
 
-        <m.button
+        <button
           type="button"
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((v) => !v)}
-          whileTap={{ scale: 0.9 }}
-          className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-line text-text transition-colors active:bg-accent/10 sm:hidden"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent/10 active:bg-accent/10 md:hidden"
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             {open ? (
-              <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
             ) : (
-              <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
             )}
           </svg>
-        </m.button>
-      </nav>
+        </button>
 
-      <AnimatePresence initial={false}>
-        {open && (
-          <m.ul
-            id="mobile-menu"
-            key="mobile-menu"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 320, damping: 34 }}
-            className="overflow-hidden border-t border-line bg-bg px-5 sm:hidden"
-          >
-            {nav.map((n) => {
-              const isActive = active === n.href;
-              return (
-                <li key={n.href}>
-                  <a
-                    href={n.href}
-                    onClick={() => setOpen(false)}
-                    aria-current={isActive ? "location" : undefined}
-                    className={`flex min-h-[48px] items-center border-l-2 pl-3 text-base transition-colors active:bg-accent/10 ${
-                      isActive ? "border-accent text-text" : "border-transparent text-muted"
-                    }`}
-                  >
-                    {n.label}
-                  </a>
-                </li>
-              );
-            })}
-          </m.ul>
-        )}
-      </AnimatePresence>
+        <AnimatePresence>
+          {open && (
+            <m.ul
+              id="mobile-menu"
+              key="mobile-menu"
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="absolute inset-x-0 top-full mt-2 rounded-3xl border border-line bg-surface p-2 shadow-[0_12px_32px_-16px_rgb(17_24_39/0.25)] md:hidden"
+            >
+              {nav.map((n) => {
+                const isActive = active === n.id;
+                return (
+                  <li key={n.id}>
+                    <a
+                      href={`#${n.id}`}
+                      onClick={() => setOpen(false)}
+                      aria-current={isActive ? "location" : undefined}
+                      className={`flex min-h-[48px] items-center rounded-2xl px-4 text-base transition-colors duration-200 ${
+                        isActive ? "bg-accent/10 font-medium text-text" : "text-muted active:bg-accent/5"
+                      }`}
+                    >
+                      {n.label}
+                    </a>
+                  </li>
+                );
+              })}
+            </m.ul>
+          )}
+        </AnimatePresence>
+      </nav>
     </header>
   );
 }

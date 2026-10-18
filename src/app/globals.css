@@ -1,33 +1,30 @@
 @import "tailwindcss";
 @import "@fontsource-variable/inter";
 
-/* Locked design system — see README section 3. Do not add new colours. */
+/* Design system — light theme. See README section 3. One accent colour only (#0D9488). */
 :root {
-  --bg: #0b0f19;
-  --surface: #111827;
-  --accent: #3b82f6;
-  --accent-soft: #60a5fa;
-  --text: #f1f5f9;
-  --muted: #94a3b8;
-  --success: #34d399;
-  --border: rgba(148, 163, 184, 0.16);
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --accent: #0d9488;
 }
 
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
-  --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
   --color-text: var(--text);
   --color-muted: var(--muted);
-  --color-success: var(--success);
   --color-line: var(--border);
+  --color-accent: var(--accent);
   --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 6rem;
+  color-scheme: light;
 }
 
 body {
@@ -37,12 +34,6 @@ body {
   font-size: 1rem;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-}
-
-@media (min-width: 640px) {
-  body {
-    font-size: 1.0625rem;
-  }
 }
 
 a,
@@ -57,78 +48,13 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent-soft);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-}
-
-/* ---------- Background depth: faint grid + vignette + grain. Fixed, behind content, CSS only. ---------- */
-.fx-grid,
-.fx-vignette,
-.fx-noise {
-  position: fixed;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.fx-grid {
-  inset: -56px; /* one tile larger than the viewport so the drift never shows an edge */
-  background-image:
-    linear-gradient(to right, rgba(59, 130, 246, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(59, 130, 246, 0.07) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-
-.fx-vignette {
-  inset: 0;
-  background: radial-gradient(ellipse 85% 75% at 50% 30%, transparent 0%, var(--bg) 100%);
-}
-
-.fx-noise {
-  inset: 0;
-  opacity: 0.045;
-  background-size: 180px 180px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* The grid drifts one tile per 70s, only where a mouse is present and motion is allowed. Phones get it static. */
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .fx-grid {
-    animation: fx-drift 70s linear infinite;
-    will-change: transform;
-  }
-}
-
-@keyframes fx-drift {
-  to {
-    transform: translate3d(56px, 56px, 0);
-  }
-}
-
-/* ---------- Section separation: gradient hairline with a centred accent dot ---------- */
-.section-divider {
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(59, 130, 246, 0.45) 50%, transparent);
-}
-
-.section-divider::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -3px;
-  width: 7px;
-  height: 7px;
-  border-radius: 9999px;
-  background: var(--accent);
-  box-shadow: 0 0 14px 2px rgba(59, 130, 246, 0.45);
-  transform: translateX(-50%);
 }

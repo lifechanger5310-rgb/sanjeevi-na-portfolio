@@ -1,27 +1,27 @@
 import Section from "@/components/Section";
-import SectionHeading from "@/components/SectionHeading";
+import Reveal from "@/components/Reveal";
 import Tag from "@/components/Tag";
-import { RevealGroup, RevealItem } from "@/components/Reveal";
 import { skills } from "@/data/content";
 
 export default function Skills() {
   return (
-    <Section id="skills">
-      <SectionHeading id="skills-title" kicker="Skills" title="Tools I use" />
-      <RevealGroup className="grid gap-8 sm:grid-cols-2" stagger={0.08}>
-        {skills.map((g) => (
-          <RevealItem key={g.group}>
-            <h3 className="mb-3 text-base font-semibold text-text">{g.group}</h3>
-            <RevealGroup as="ul" label={`${g.group} skills`} className="flex flex-wrap gap-2" stagger={0.035} delay={0.1}>
-              {g.items.map((s) => (
-                <RevealItem as="li" key={s}>
-                  <Tag>{s}</Tag>
-                </RevealItem>
-              ))}
-            </RevealGroup>
-          </RevealItem>
-        ))}
-      </RevealGroup>
+    <Section id="skills" label="Skills" title="Tools and technologies">
+      <Reveal delay={0.05}>
+        <div className="divide-y divide-line rounded-2xl border border-line bg-surface">
+          {skills.map((g) => (
+            <div key={g.group} className="grid gap-3 p-5 sm:grid-cols-[10rem_1fr] sm:gap-6 sm:p-6">
+              <h3 className="text-sm font-medium text-text">{g.group}</h3>
+              <ul className="flex flex-wrap gap-2" aria-label={g.group}>
+                {g.items.map((s) => (
+                  <li key={s}>
+                    <Tag>{s}</Tag>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </Reveal>
     </Section>
   );
 }

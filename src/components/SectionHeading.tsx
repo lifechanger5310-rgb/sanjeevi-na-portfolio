@@ -1,28 +1,15 @@
-"use client";
-
-import { m } from "framer-motion";
 import Reveal from "./Reveal";
 
-export default function SectionHeading({ id, title, kicker }: { id?: string; title: string; kicker?: string }) {
+export default function SectionHeading({ id, label, title }: { id: string; label: string; title: string }) {
   return (
-    <Reveal>
-      <div className="mb-8 sm:mb-10">
-        {kicker && <p className="mb-2 text-sm font-medium tracking-wide text-accent-soft">{kicker}</p>}
-        <h2 id={id} className="text-2xl font-bold tracking-tight text-text sm:text-3xl">
-          {title}
-        </h2>
-        {/* Accent bar draws in with the heading (inherits the Reveal's hidden/show states). */}
-        <m.span
-          aria-hidden="true"
-          variants={{
-            hidden: { scaleX: 0 },
-            show: { scaleX: 1, transition: { type: "spring", stiffness: 120, damping: 20, delay: 0.2 } },
-          }}
-          style={{ originX: 0 }}
-          data-reveal=""
-          className="mt-4 block h-0.5 w-12 rounded-full bg-accent"
-        />
-      </div>
+    <Reveal className="mb-10 sm:mb-12">
+      <p className="flex items-center gap-3 text-xs font-medium uppercase tracking-[0.16em] text-muted">
+        <span aria-hidden="true" className="h-px w-8 bg-accent" />
+        {label}
+      </p>
+      <h2 id={id} className="mt-3 text-2xl font-semibold tracking-tight text-text sm:text-3xl">
+        {title}
+      </h2>
     </Reveal>
   );
 }
